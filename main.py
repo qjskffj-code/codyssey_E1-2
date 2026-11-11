@@ -97,19 +97,40 @@ def show_quiz_list(quizzes):
     print("-" * 40 + "\n")
 
 
+def update_best_score(score, best_score):
+    """이번 점수와 최고 점수를 비교해서, 더 높은 쪽을 돌려준다."""
+    if score is None:
+        return best_score
+    if best_score is None or score > best_score:
+        print("🎉 새로운 최고 점수입니다!\n")
+        return score
+    print(f"현재 최고 점수는 {best_score}점입니다.\n")
+    return best_score
+
+
+def show_best_score(best_score):
+    """최고 점수를 출력한다."""
+    if best_score is None:
+        print("\n📭 아직 퀴즈를 풀지 않았습니다. 1번으로 먼저 도전해 보세요!\n")
+    else:
+        print(f"\n🏆 최고 점수: {best_score}점\n")
+
+
 def main():
     quizzes = get_default_quizzes()
+    best_score = None
     while True:
         show_menu()
         choice = ask_number("선택: ", 1, len(MENU_ITEMS))
         if choice == 1:
-            play_quiz(quizzes)
+            score = play_quiz(quizzes)
+            best_score = update_best_score(score, best_score)
         elif choice == 2:
             add_quiz(quizzes)
         elif choice == 3:
             show_quiz_list(quizzes)
         elif choice == 4:
-            print("\n(준비 중) 점수 확인\n")
+            show_best_score(best_score)
         else:
             print("👋 프로그램을 종료합니다.")
             break
