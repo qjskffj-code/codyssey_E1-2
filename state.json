@@ -1,0 +1,125 @@
+{
+    "quizzes": [
+        {
+            "question": "Python에서 참(True)/거짓(False)을 나타내는 자료형은?",
+            "choices": [
+                "int",
+                "str",
+                "bool",
+                "list"
+            ],
+            "answer": 3
+        },
+        {
+            "question": "조건이 참인 동안 계속 반복할 때 쓰는 반복문은?",
+            "choices": [
+                "while",
+                "for",
+                "if",
+                "def"
+            ],
+            "answer": 1
+        },
+        {
+            "question": "클래스로 객체를 만들 때 자동으로 실행되는 메서드는?",
+            "choices": [
+                "__main__",
+                "__str__",
+                "self",
+                "__init__"
+            ],
+            "answer": 4
+        },
+        {
+            "question": "메서드의 첫 번째 매개변수 self가 가리키는 것은?",
+            "choices": [
+                "그 메서드를 호출한 객체 자기 자신",
+                "클래스 이름 문자열",
+                "프로그램 전체",
+                "가장 마지막에 만든 객체"
+            ],
+            "answer": 1
+        },
+        {
+            "question": "'키(key)와 값(value)'의 쌍으로 데이터를 저장하는 자료형은?",
+            "choices": [
+                "list",
+                "str",
+                "dict",
+                "int"
+            ],
+            "answer": 3
+        },
+        {
+            "question": "int(\"abc\")처럼 숫자로 바꿀 수 없는 글자를 변환하면 나는 오류는?",
+            "choices": [
+                "TypeError",
+                "ValueError",
+                "KeyError",
+                "IndexError"
+            ],
+            "answer": 2
+        },
+        {
+            "question": "파이썬 데이터를 JSON 파일에 '쓸' 때 사용하는 함수는?",
+            "choices": [
+                "json.load",
+                "json.read",
+                "json.open",
+                "json.dump"
+            ],
+            "answer": 4
+        },
+        {
+            "question": "GitHub의 원격 저장소를 내 컴퓨터로 통째로 처음 복사해 오는 명령어는?",
+            "choices": [
+                "git pull",
+                "git clone",
+                "git push",
+                "git init"
+            ],
+            "answer": 2
+        },
+        {
+            "question": "새 브랜치 feature를 만들면서 바로 그 브랜치로 이동하는 명령어는?",
+            "choices": [
+                "git merge feature",
+                "git commit -b feature",
+                "git checkout -b feature",
+                "git push feature"
+            ],
+            "answer": 3
+        },
+        {
+            "question": "프로그램 실행 중 Ctrl+C를 누르면 발생하는 예외는?",
+            "choices": [
+                "KeyboardInterrupt",
+                "EOFError",
+                "ValueError",
+                "FileNotFoundError"
+            ],
+            "answer": 1
+        },
+        {
+            "question": "list(range(1, 5))의 결과는?",
+            "choices": [
+                "[1, 2, 3, 4, 5]",
+                "[0, 1, 2, 3, 4]",
+                "[1, 2, 3, 4]",
+                "[2, 3, 4, 5]"
+            ],
+            "answer": 3
+        },
+        {
+            "question": "작업 내용을 스테이징 영역(바구니)에 담는 명령어는?",
+            "choices": [
+                "git commit",
+                "git log",
+                "git status",
+                "git add"
+            ],
+            "answer": 4
+        }
+    ],
+    "best_score": 83
+}

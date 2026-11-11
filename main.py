@@ -1,5 +1,10 @@
+import json
+from pathlib import Path
+
 from quiz import Quiz
 from quiz_data import get_default_quizzes
+
+STATE_FILE = Path(__file__).parent / "state.json"
 
 MENU_ITEMS = ["퀴즈 풀기", "퀴즈 추가", "퀴즈 목록", "점수 확인", "종료"]
 
@@ -116,27 +121,74 @@ def show_best_score(best_score):
         print(f"\n🏆 최고 점수: {best_score}점\n")
 
 
+def load_state():
+    """state.json에서 퀴즈 목록과 최고 점수를 불러온다. 문제가 있으면 기본값을 쓴다."""
+    if not STATE_FILE.exists():
+        print("📂 저장 파일이 없어 기본 퀴즈로 시작합니다.")
+        return get_default_quizzes(), None
+
+    try:
+        with open(STATE_FILE, "r", encoding="utf-8") as file:
+            data = json.load(file)
+
+        quizzes = []
+        for item in data["quizzes"]:
+            if len(item["choices"]) != 4 or item["answer"] not in (1, 2, 3, 4):
+                raise ValueError("퀴즈 형식이 올바르지 않습니다.")
+            quizzes.append(Quiz(item["question"], item["choices"], item["answer"]))
+        best_score = data.get("best_score")
+
+        score_text = "없음" if best_score is None else f"{best_score}점"
+        print(f"📂 저장된 데이터를 불러왔습니다. (퀴즈 {len(quizzes)}개, 최고점수 {score_text})")
+        return quizzes, best_score
+    except (json.JSONDecodeError, KeyError, TypeError, ValueError, OSError):
+        print("⚠️ 저장 파일이 손상되어 기본 퀴즈로 복구합니다.")
+        return get_default_quizzes(), None
+
+
+def save_state(quizzes, best_score):
+    """퀴즈 목록과 최고 점수를 state.json에 저장한다."""
+    quiz_list = []
+    for quiz in quizzes:
+        quiz_list.append(quiz.to_dict())
+    data = {"quizzes": quiz_list, "best_score": best_score}
+
+    try:
+        with open(STATE_FILE, "w", encoding="utf-8") as file:
+            json.dump(data, file, ensure_ascii=False, indent=4)
+    except OSError:
+        print("⚠️ 파일을 저장하는 중 오류가 발생했습니다.")
+
+
 def main():
-    quizzes = get_default_quizzes()
-    best_score = None
-    while True:
-        show_menu()
-        choice = ask_number("선택: ", 1, len(MENU_ITEMS))
-        if choice == 1:
-            score = play_quiz(quizzes)
-            best_score = update_best_score(score, best_score)
-        elif choice == 2:
-            add_quiz(quizzes)
-        elif choice == 3:
-            show_quiz_list(quizzes)
-        elif choice == 4:
-            show_best_score(best_score)
-        else:
-            print("👋 프로그램을 종료합니다.")
-            break
+    quizzes, best_score = load_state()
+    try:
+        while True:
+            show_menu()
+            choice = ask_number("선택: ", 1, len(MENU_ITEMS))
+            if choice == 1:
+                score = play_quiz(quizzes)
+                best_score = update_best_score(score, best_score)
+                save_state(quizzes, best_score)
+            elif choice == 2:
+                add_quiz(quizzes)
+                save_state(quizzes, best_score)
+            elif choice == 3:
+                show_quiz_list(quizzes)
+            elif choice == 4:
+                show_best_score(best_score)
+            else:
+                save_state(quizzes, best_score)
+                print("👋 프로그램을 종료합니다.")
+                break
+    except (KeyboardInterrupt, EOFError):
+        save_state(quizzes, best_score)
+        print("\n\n👋 입력이 중단되어 저장 후 안전하게 종료합니다.")
 
 
 if __name__ == "__main__":
+    main()
+
     try:
         main()
     except (KeyboardInterrupt, EOFError):

@@ -18,6 +18,14 @@ class Quiz:
     def is_correct(self, user_answer):
         """사용자 답이 정답이면 True, 아니면 False를 돌려준다."""
         return user_answer == self.answer
+    
+    def to_dict(self):
+        """JSON으로 저장할 수 있게 dict 형태로 바꿔 돌려준다."""
+        return {
+            "question": self.question,
+            "choices": self.choices,
+            "answer": self.answer,
+        }
 
 
 if __name__ == "__main__":
