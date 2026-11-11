@@ -1,3 +1,4 @@
+from quiz import Quiz
 from quiz_data import get_default_quizzes
 
 MENU_ITEMS = ["퀴즈 풀기", "퀴즈 추가", "퀴즈 목록", "점수 확인", "종료"]
@@ -57,6 +58,31 @@ def play_quiz(quizzes):
     print("=" * 40 + "\n")
     return score
 
+def ask_text(prompt):
+    """빈 값이 아닌 글자를 받을 때까지 다시 묻는다."""
+    while True:
+        text = input(prompt).strip()
+        if text != "":
+            return text
+        print("⚠️ 빈 값은 입력할 수 없습니다. 다시 입력하세요.")
+
+
+def add_quiz(quizzes):
+    """사용자에게 문제, 선택지 4개, 정답을 입력받아 새 퀴즈를 추가한다."""
+    print("\n📌 새로운 퀴즈를 추가합니다.\n")
+    question = ask_text("문제를 입력하세요: ")
+
+    choices = []
+    for number in range(1, 5):
+        choice = ask_text(f"선택지 {number}: ")
+        choices.append(choice)
+
+    answer = ask_number("정답 번호 (1-4): ", 1, 4)
+
+    new_quiz = Quiz(question, choices, answer)
+    quizzes.append(new_quiz)
+    print(f"\n✅ 퀴즈가 추가되었습니다! (현재 총 {len(quizzes)}개)\n")
+
 
 def main():
     quizzes = get_default_quizzes()
@@ -66,7 +92,7 @@ def main():
         if choice == 1:
             play_quiz(quizzes)
         elif choice == 2:
-            print("\n(준비 중) 퀴즈 추가\n")
+            add_quiz(quizzes)
         elif choice == 3:
             print("\n(준비 중) 퀴즈 목록\n")
         elif choice == 4:
