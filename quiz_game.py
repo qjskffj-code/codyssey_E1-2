@@ -1,4 +1,6 @@
 import json
+import shutil
+from datetime import datetime
 from pathlib import Path
 
 from quiz import Quiz
@@ -168,9 +170,21 @@ class QuizGame:
             self.best_score = data.get("best_score")
             score_text = "없음" if self.best_score is None else f"{self.best_score}점"
             print(f"📂 저장된 데이터를 불러왔습니다. (퀴즈 {len(self.quizzes)}개, 최고점수 {score_text})")
-        except (json.JSONDecodeError, KeyError, TypeError, ValueError, OSError):
+        except (json.JSONDecodeError, KeyError, TypeError, ValueError, OSError) as error:
             print("⚠️ 저장 파일이 손상되어 기본 퀴즈로 복구합니다.")
+            print(f"   원인: {type(error).__name__} - {error}")
+            self.backup_broken_file()
             self.reset_to_default()
+
+    def backup_broken_file(self):
+        """손상된 저장 파일을 지우지 않고 시간이 붙은 백업 파일로 복사해 둔다."""
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        backup_path = self.state_file.with_name(f"state_backup_{timestamp}.json")
+        try:
+            shutil.copy2(self.state_file, backup_path)
+            print(f"   손상된 파일은 {backup_path.name} 으로 백업했습니다.")
+        except OSError as error:
+            print(f"   백업 파일을 만들지 못했습니다: {error}")
 
     def reset_to_default(self):
         """기본 퀴즈와 빈 점수로 초기화한다."""
@@ -187,5 +201,5 @@ class QuizGame:
         try:
             with open(self.state_file, "w", encoding="utf-8") as file:
                 json.dump(data, file, ensure_ascii=False, indent=4)
-        except OSError:
-            print("⚠️ 파일을 저장하는 중 오류가 발생했습니다.")
+        except OSError as error:
+            print(f"⚠️ 파일을 저장하는 중 오류가 발생했습니다. ({type(error).__name__} - {error})")
