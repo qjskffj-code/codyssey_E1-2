@@ -109,16 +109,6 @@
                 "[2, 3, 4, 5]"
             ],
             "answer": 3
-        },
-        {
-            "question": "작업 내용을 스테이징 영역(바구니)에 담는 명령어는?",
-            "choices": [
-                "git commit",
-                "git log",
-                "git status",
-                "git add"
-            ],
-            "answer": 4
         }
     ],
     "best_score": 83

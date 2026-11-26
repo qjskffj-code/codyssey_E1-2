@@ -7,7 +7,7 @@ from quiz import Quiz
 from quiz_data import get_default_quizzes
 
 STATE_FILE = Path(__file__).parent / "state.json"
-MENU_ITEMS = ["퀴즈 풀기", "퀴즈 추가", "퀴즈 목록", "점수 확인", "종료"]
+MENU_ITEMS = ["퀴즈 풀기", "퀴즈 추가", "퀴즈 목록", "점수 확인", "퀴즈 삭제", "종료"]
 
 
 class QuizGame:
@@ -34,6 +34,8 @@ class QuizGame:
                     self.show_quiz_list()
                 elif choice == 4:
                     self.show_best_score()
+                elif choice == 5:
+                    self.delete_quiz()                    
                 else:
                     self.save()
                     print("👋 프로그램을 종료합니다.")
@@ -131,6 +133,29 @@ class QuizGame:
         for number, quiz in enumerate(self.quizzes, start=1):
             print(f"[{number}] {quiz.question}")
         print("-" * 40 + "\n")
+        
+    def delete_quiz(self):
+        """목록을 보여 주고, 고른 번호의 퀴즈를 확인 후 삭제한 뒤 저장한다."""
+        if len(self.quizzes) == 0:
+            print("\n📭 삭제할 퀴즈가 없습니다.\n")
+            return
+
+        self.show_quiz_list()
+        total = len(self.quizzes)
+        number = self.ask_number(f"삭제할 퀴즈 번호 (1-{total}, 취소는 0): ", 0, total)
+        if number == 0:
+            print("\n↩️ 삭제를 취소했습니다.\n")
+            return
+
+        target = self.quizzes[number - 1]
+        confirm = input(f"'{target.question}' 퀴즈를 삭제할까요? (y/n): ").strip().lower()
+        if confirm != "y":
+            print("\n↩️ 삭제를 취소했습니다.\n")
+            return
+
+        self.quizzes.pop(number - 1)
+        self.save()
+        print(f"\n🗑️ 퀴즈를 삭제했습니다. (남은 퀴즈 {len(self.quizzes)}개)\n")
 
     # ---------- 점수 ----------
     def update_best_score(self, score):
