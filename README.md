@@ -773,7 +773,7 @@ git log --oneline -3   # 복제본에서 만든 커밋이 보이면 성공
 - [x] `.gitignore`, `README.md` 작성
 - [x] 의미 있는 커밋 10개 이상
 - [x] 브랜치 생성 및 병합 (`checkout`, `merge`)
-- [ ] `clone`으로 별도 디렉터리에 복제 후 수정·commit·push
+- [x] `clone`으로 별도 디렉터리에 복제 후 수정·commit·push
 - [ ] 기존 작업 디렉터리에서 `pull`로 변경 사항 반영 확인
 
 ## Bonus
